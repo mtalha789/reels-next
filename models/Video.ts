@@ -4,13 +4,14 @@ export const VIDEO_DEMENSIONS = {
     width: 1080,
     height: 1920
 }
-interface IVideo {
+export interface IVideo {
     _id? : mongoose.Types.ObjectId;
     title: string;
     description: string;
     thumbnailUrl: string;
     videoUrl: string;
     controls: boolean;
+    ownerId?: mongoose.Types.ObjectId;
     transformation? : {
         width: number;
         height: number;
@@ -31,10 +32,11 @@ const videoSchema = new Schema<IVideo>({
         width: { type: Number, default: VIDEO_DEMENSIONS.width },
         quality: { type: Number, min: 1, max: 100 },
     },
+    ownerId: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 },{
     timestamps: true
 })
 
 const Video = models?.Video || model<IVideo>('Video', videoSchema)
 
-export default videoSchema
+export default Video
